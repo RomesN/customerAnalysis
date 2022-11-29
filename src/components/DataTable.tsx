@@ -1,7 +1,7 @@
 import Loading from "./Loading";
 import { useCustomerAnalysisContext } from "../hooks/CustomerAnalysisContext";
 
-const Filter = () => {
+const DataTable = () => {
     const { getIsLoading } = useCustomerAnalysisContext();
 
     if (getIsLoading()) {
@@ -11,4 +11,4 @@ const Filter = () => {
     return <></>;
 };
 
-export default Filter;
+export default DataTable;

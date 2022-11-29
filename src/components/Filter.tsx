@@ -14,40 +14,40 @@ const Filter = () => {
 
     const calculatePostalCodesCategories = async (currentFilter: string | null) => {
         const categories = [] as FilterCategoryType[];
-        if (currentFilter && currentFilter.length > 6) {
-            setFilterCategoriesState(null);
-            setIsLoadingState(false);
-            return;
-        }
         let sum = 0;
-        for (let i = 1; i < 11; i++) {
+        for (let i = 0; i < 11; i++) {
             let count;
             let categoryName;
 
             if (i === 10) {
-                const currentFilterCount = currentFilter
+                categoryName = `${currentFilter}others`;
+
+                const appliedFilterCount = currentFilter
                     ? await getZipCodesRowCountStartingWith(currentFilter)
                     : await getPostalCountAll();
-                categoryName = `${currentFilter}others`;
-                if (typeof currentFilterCount === "string") {
-                    const parsedCount = parseInt(currentFilterCount);
-                    count = !Number.isNaN(parsedCount) ? `${parsedCount - sum}` : 0;
+                const parsedAppliedFilterCount =
+                    typeof appliedFilterCount === "string" ? parseInt(appliedFilterCount) : 0;
+                count = !Number.isNaN(parsedAppliedFilterCount) ? parsedAppliedFilterCount - sum : 0;
+
+                if (categories.length === 10 && count !== 0) {
+                    count = count + categories[0].records;
+                    categories.splice(0, 1);
                 }
             } else {
                 categoryName = `${currentFilter ? currentFilter : ""}${i}`;
-                count = await getZipCodesRowCountStartingWith(categoryName);
+                const categoryCount = await getZipCodesRowCountStartingWith(categoryName);
+                const parsedCategoryCount = typeof categoryCount === "string" ? parseInt(categoryCount) : 0;
+                count = !Number.isNaN(parsedCategoryCount) ? parsedCategoryCount : 0;
             }
 
-            const parsedCount = typeof count === "string" ? parseInt(count) : 0;
-
-            if (!Number.isNaN(parsedCount) && parsedCount !== 0) {
-                while (categoryName.length < 6) {
+            if (count !== 0) {
+                while (categoryName.length < 5) {
                     categoryName = categoryName.concat("x");
                 }
-                sum += parsedCount;
+                sum += count;
                 categories.push({
                     name: categoryName,
-                    records: parsedCount,
+                    records: count,
                 });
             }
         }
