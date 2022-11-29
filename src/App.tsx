@@ -1,19 +1,14 @@
-import { Route, Routes } from "react-router-dom";
-import ErrorBoundary from "./components/ErrorBoundary";
-import Filter from "./components/Filter";
+import { Route, Routes, Navigate } from "react-router-dom";
+import CustomerApi from "./pages/CustomersApi";
 
 function App() {
     return (
-        <Routes>
-            <Route
-                path="/customers"
-                element={
-                    <ErrorBoundary>
-                        <Filter></Filter>
-                    </ErrorBoundary>
-                }
-            />
-        </Routes>
+        <>
+            <Routes>
+                <Route path="/" element={<Navigate to="/customers" />} />
+                <Route path="/customers" element={<CustomerApi />} />
+            </Routes>
+        </>
     );
 }
 
