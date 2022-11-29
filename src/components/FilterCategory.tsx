@@ -14,7 +14,7 @@ const FilterCategory = ({ category }: FilterCategoryProps) => {
             }}
         >
             <div>
-                <p>psc: {category.name}</p>
+                <p>psc: {category.name.includes("others") ? "others" : category.name}</p>
             </div>
             <div>
                 <p>count: {category.records}</p>

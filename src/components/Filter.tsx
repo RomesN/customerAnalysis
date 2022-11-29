@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import FilterCategory from "./FilterCategory";
 import { FilterCategory as FilterCategoryType } from "../shared/types";
+import { getPostalCountAll } from "../api/customersApi";
 import { getZipCodesRowCountStartingWith } from "../utils/helperFuncions";
 import Loading from "./Loading";
 import { useCustomerAnalysisContext } from "../hooks/CustomerAnalysisContext";
@@ -11,35 +12,42 @@ const Filter = () => {
     const currentFilterApplied = getAppliedFilter();
     const calculatedCategories = getFilterCategories();
 
-    const calculatePostalCodesCategories = async (currentFilter: string) => {
+    const calculatePostalCodesCategories = async (currentFilter: string | null) => {
         const categories = [] as FilterCategoryType[];
-        if (currentFilter.length > 6) {
+        if (currentFilter && currentFilter.length > 6) {
             setFilterCategoriesState(null);
             setIsLoadingState(false);
             return;
         }
+        let sum = 0;
         for (let i = 1; i < 11; i++) {
             let count;
             let categoryName;
 
             if (i === 10) {
-                categoryName = currentFilter.length !== 0 ? currentFilter + " " : "others";
-                count =
-                    currentFilter.length !== 0
-                        ? await getZipCodesRowCountStartingWith(" ")
-                        : await getZipCodesRowCountStartingWith(null);
+                const currentFilterCount = currentFilter
+                    ? await getZipCodesRowCountStartingWith(currentFilter)
+                    : await getPostalCountAll();
+                categoryName = `${currentFilter}others`;
+                if (typeof currentFilterCount === "string") {
+                    const parsedCount = parseInt(currentFilterCount);
+                    count = !Number.isNaN(parsedCount) ? `${parsedCount - sum}` : 0;
+                }
             } else {
-                categoryName = `${currentFilter}${i}`;
+                categoryName = `${currentFilter ? currentFilter : ""}${i}`;
                 count = await getZipCodesRowCountStartingWith(categoryName);
             }
 
-            if (typeof count === "string" && !Number.isNaN(parseInt(count)) && parseInt(count) !== 0) {
+            const parsedCount = typeof count === "string" ? parseInt(count) : 0;
+
+            if (!Number.isNaN(parsedCount) && parsedCount !== 0) {
                 while (categoryName.length < 6) {
                     categoryName = categoryName.concat("x");
                 }
+                sum += parsedCount;
                 categories.push({
                     name: categoryName,
-                    records: parseInt(count),
+                    records: parsedCount,
                 });
             }
         }
@@ -48,9 +56,8 @@ const Filter = () => {
     };
 
     useEffect(() => {
-        console.log(calculatedCategories);
         setIsLoadingState(true);
-        calculatePostalCodesCategories(currentFilterApplied || "");
+        calculatePostalCodesCategories(currentFilterApplied);
     }, [currentFilterApplied]);
 
     if (getIsLoading()) {
