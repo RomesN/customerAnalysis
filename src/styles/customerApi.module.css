@@ -1,6 +1,7 @@
 .customerApiContainer {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .customerApiContainer h4 {

@@ -26,7 +26,7 @@
     word-wrap: break-word;
 }
 
-/* Large devices (laptops/desktops, 992px and up) */
+/* Larger devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
     .dataTable th {
         font-size: 15px;
@@ -37,7 +37,7 @@
     }
 }
 
-/* SMALLER DISPLAYS */
+/* Smaller devices */
 @media screen and (max-width: 991px) {
     .dataTable th {
         font-size: 12px;

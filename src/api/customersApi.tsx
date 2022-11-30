@@ -51,9 +51,9 @@ export const getPostalCountAll = () => {
         });
 };
 
-export const getAllData = () => {
+export const getAllEmpty = () => {
     return api
-        .get<Response>(`/v2/c/demo/adresar.json?limit=0`)
+        .get<Response>(`/v2/c/demo/adresar/(psc is null).json`, { params: { limit: 0 } })
         .then((response) => {
             return response.data.winstrom.adresar;
         })
@@ -64,18 +64,31 @@ export const getAllData = () => {
         });
 };
 
-export const getFilteredData = (filter: string) => {
-    const numberPart = filter.replace("others", "");
+export const getAllData = () => {
     return api
-        .get<Response>(`/v2/c/demo/adresar/(psc begins '${numberPart}').json?limit=0`)
+        .get<Response>(`/v2/c/demo/adresar.json`, { params: { limit: 0 } })
+        .then((response) => {
+            return response.data.winstrom.adresar;
+        })
+        .catch((error) => {
+            if (axios.isAxiosError(error)) {
+                return error;
+            }
+        });
+};
+
+export const getFilteredData = async (filter: string) => {
+    const numberPart = filter.replace("others", "");
+    let result = await api
+        .get<Response>(`/v2/c/demo/adresar/(psc begins '${numberPart}').json`, { params: { limit: 0 } })
         .then(async (response) => {
             if (filter.includes("others")) {
                 const categories = await calculatePostalCodesCategories(numberPart);
                 const filterOutStart = categories.othersContainZero ? 1 : 0;
-                const filteredData = response.data.winstrom.adresar.filter((customer) => {
-                    return RegExp(`${numberPart}[^${filterOutStart}-9]`, "g").test(customer.psc);
+                const onlyOther = numberPart.length === 0 ? "^" : "";
+                return response.data.winstrom.adresar.filter((customer) => {
+                    return RegExp(`${numberPart}${onlyOther}[^${filterOutStart}-9]`, "g").test(customer.psc);
                 });
-                return filteredData;
             } else {
                 return response.data.winstrom.adresar;
             }
@@ -85,4 +98,11 @@ export const getFilteredData = (filter: string) => {
                 return error;
             }
         });
+    if (numberPart.length === 0) {
+        const notFilled = await getAllEmpty();
+        if (Array.isArray(notFilled) && Array.isArray(result)) {
+            result = [...result, ...notFilled];
+        }
+    }
+    return result;
 };

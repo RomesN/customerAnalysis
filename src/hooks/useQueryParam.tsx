@@ -7,8 +7,12 @@ export default function useQueryParam(paramName: string) {
     const [state, setState] = useState<string | null>(param);
 
     useEffect(() => {
-        if (state && param !== state) {
-            searchParams.set(paramName, state);
+        if (param !== state) {
+            if (state) {
+                searchParams.set(paramName, state);
+            } else {
+                searchParams.delete(paramName);
+            }
             setSearchParams(searchParams);
         }
     }, [state]);

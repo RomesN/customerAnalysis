@@ -10,7 +10,7 @@ const DataTable = () => {
     const { getAppliedFilter, getData, getIsDataLoading, getPage, setIsDataLoadingState, setDataState, setPageState } =
         useCustomerAnalysisContext();
     const appliedFilter = getAppliedFilter();
-    const currentPage = parseInt(getPage() || "1");
+    const currentPage = getPage() || 1;
     const totalNumberOfPages = Math.ceil((getData()?.length || 0) / 20);
 
     const fetchData = async () => {
@@ -57,7 +57,7 @@ const DataTable = () => {
             result.push(
                 <button
                     onClick={() => {
-                        setPageState(i.toString());
+                        setPageState(i);
                     }}
                     disabled={i === currentPage}
                     className={i === currentPage ? styles.currentPage : styles.otherPages}
@@ -72,7 +72,7 @@ const DataTable = () => {
             result.push(
                 <FontAwesomeIcon
                     onClick={() => {
-                        setPageState(Math.min(currentPage + 7, pageCount).toString());
+                        setPageState(Math.min(currentPage + 7, pageCount));
                     }}
                     size="sm"
                     key="right"
@@ -88,7 +88,7 @@ const DataTable = () => {
                 0,
                 <FontAwesomeIcon
                     onClick={() => {
-                        setPageState(Math.max(currentPage - 7, 1).toString());
+                        setPageState(Math.max(currentPage - 7, 1));
                     }}
                     size="sm"
                     key="left"
@@ -111,18 +111,16 @@ const DataTable = () => {
 
     return (
         <>
-            {!Number.isNaN(currentPage) && currentPage <= totalNumberOfPages && (
-                <table className={styles.dataTable}>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th>Postal</th>
-                        </tr>
-                    </thead>
-                    <tbody>{showPage()}</tbody>
-                </table>
-            )}
+            <table className={styles.dataTable}>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Postal</th>
+                    </tr>
+                </thead>
+                <tbody>{showPage()}</tbody>
+            </table>
             <div className={styles.pageContainer}>{showPages(totalNumberOfPages)}</div>
         </>
     );

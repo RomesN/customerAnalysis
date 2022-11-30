@@ -4,17 +4,17 @@ import useQueryParam from "./useQueryParam";
 
 type CustomerAnalysisContextType = {
     getData: () => Customer[] | null;
-    getPage: () => string | null;
+    getPage: () => number;
     getAppliedFilter: () => string | null;
     getFilterCategories: () => null | FilterCategory[];
     getIsFilterLoading: () => boolean;
     getIsDataLoading: () => boolean;
-    setAppliedFilterState: (selectedCategoryString: string) => void;
+    setAppliedFilterState: (selectedCategoryString: string | null) => void;
     setFilterCategoriesState: (filterCategories: null | FilterCategory[]) => void;
     setDataState: (receivedData: any) => void;
     setIsFilterLoadingState: (isLoadingState: boolean) => void;
     setIsDataLoadingState: (isLoadingState: boolean) => void;
-    setPageState: (newPage: string) => void;
+    setPageState: (newPage: number) => void;
 };
 
 export const CustomerAnalysisContext = React.createContext({} as CustomerAnalysisContextType);
@@ -29,7 +29,7 @@ export const CustomerAnalysisContextProvider = ({ children }: Props) => {
     const [filterCategories, setFilterCategories] = useState<null | FilterCategory[]>(null);
     const [isFilterLoading, setIsFilterLoading] = useState(false);
     const [isDataLoading, setIsDataLoading] = useState(false);
-    const [page, setPage] = useQueryParam("page");
+    const [page, setPage] = useState(1);
 
     function getData() {
         return data;
@@ -59,11 +59,11 @@ export const CustomerAnalysisContextProvider = ({ children }: Props) => {
         setData(receivedData);
     }
 
-    function setPageState(newPage: string) {
+    function setPageState(newPage: number) {
         setPage(newPage);
     }
 
-    function setAppliedFilterState(selectedCategoryString: string) {
+    function setAppliedFilterState(selectedCategoryString: string | null) {
         setAppliedFilter(selectedCategoryString);
     }
 

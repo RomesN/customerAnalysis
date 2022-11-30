@@ -1,4 +1,49 @@
+@import "./general/colors.css";
+
 .noDrillDown {
     margin: 4px 7px;
-    font-size: 15px;
+    text-align: center;
+}
+
+.removeFilterButton {
+    border-radius: 5px;
+    border: 0.5px solid var(--dark);
+    background-color: var(--secondaryColor);
+    color: var(--bright);
+    width: 100%;
+    margin-top: 2px;
+    padding: 5px;
+}
+
+.removeFilterButton:hover {
+    background-color: var(--dark);
+    color: var(--bright);
+    cursor: pointer;
+}
+
+.removeFilterButton:disabled {
+    background-color: var(--tertiaryColor);
+    color: var(--dark);
+    cursor: default;
+}
+
+/* Larger devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .removeFilterButton {
+        font-size: 15px;
+    }
+
+    .noDrillDown {
+        font-size: 15px;
+    }
+}
+
+/* Smaller devices */
+@media screen and (max-width: 991px) {
+    .removeFilterButton {
+        font-size: 12px;
+    }
+    .noDrillDown {
+        font-size: 15px;
+    }
 }

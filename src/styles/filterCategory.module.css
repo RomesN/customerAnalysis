@@ -3,7 +3,7 @@
 .filterCategoryContainer {
     border: 0.5px solid var(--dark);
     border-radius: 5px;
-    margin: 2px 2px;
+    margin: 2px 0;
     padding: 2px 5px;
     background-color: var(--mainColor);
     animation: fadeIn 1s;
@@ -37,7 +37,7 @@
     }
 }
 
-/* Large devices (laptops/desktops, 992px and up) */
+/* Larger devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
     .filterCategoryFilter {
         font-size: 15px;
@@ -48,7 +48,7 @@
     }
 }
 
-/* SMALLER DISPLAYS */
+/* Smaller devices */
 @media screen and (max-width: 991px) {
     .filterCategoryFilter {
         font-size: 12px;

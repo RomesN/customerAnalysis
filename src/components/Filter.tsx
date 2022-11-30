@@ -10,6 +10,7 @@ const Filter = () => {
         getAppliedFilter,
         getFilterCategories,
         getIsFilterLoading,
+        setAppliedFilterState,
         setIsFilterLoadingState,
         setFilterCategoriesState,
         setPageState,
@@ -19,7 +20,7 @@ const Filter = () => {
 
     const calculateCategoriesAndSetStates = async (currentFilter: string | null) => {
         const calculatedCategories = calculatePostalCodesCategories(currentFilter);
-        setPageState("1");
+        setPageState(1);
         setFilterCategoriesState((await calculatedCategories).categories);
         setIsFilterLoadingState(false);
     };
@@ -35,6 +36,15 @@ const Filter = () => {
 
     return (
         <>
+            <button
+                disabled={!getAppliedFilter()}
+                onClick={() => {
+                    setAppliedFilterState(null);
+                }}
+                className={styles.removeFilterButton}
+            >
+                Remove filter
+            </button>
             {calculatedCategories &&
                 calculatedCategories.length > 1 &&
                 getFilterCategories()?.map((category) => {
