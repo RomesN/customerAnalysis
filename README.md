@@ -8,6 +8,10 @@ Copy .env.example as .env then replace the settings in the .env file and run one
 
 ## Example of the result
 
+
+https://user-images.githubusercontent.com/81518313/204867328-78b67892-3bb9-4e2c-a95e-c167f93b985d.mp4
+
+
 ## Available Scripts
 
 In the project directory, you can run:
