@@ -13,6 +13,7 @@ const CustomerApi = () => {
                 </ErrorBoundary>
             </div>
             <div className={styles.customerApiDataContainer}>
+                <h4>Data</h4>
                 <ErrorBoundary>
                     <DataTable />
                 </ErrorBoundary>

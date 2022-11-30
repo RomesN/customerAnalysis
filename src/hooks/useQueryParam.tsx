@@ -3,22 +3,21 @@ import { useSearchParams } from "react-router-dom";
 
 export default function useQueryParam(paramName: string) {
     const [searchParams, setSearchParams] = useSearchParams();
-    const postalSearchWith = searchParams.get(paramName);
-    const [appliedFilter, setAppliedFilter] = useState<string | null>(postalSearchWith);
+    const param = searchParams.get(paramName);
+    const [state, setState] = useState<string | null>(param);
 
     useEffect(() => {
-        if (appliedFilter && postalSearchWith !== appliedFilter) {
-            setSearchParams({
-                postalStartsWith: appliedFilter,
-            });
+        if (state && param !== state) {
+            searchParams.set(paramName, state);
+            setSearchParams(searchParams);
         }
-    }, [appliedFilter]);
+    }, [state]);
 
     useEffect(() => {
-        if (postalSearchWith !== appliedFilter) {
-            setAppliedFilter(postalSearchWith);
+        if (param !== state) {
+            setState(param);
         }
-    }, [postalSearchWith]);
+    }, [param]);
 
-    return [appliedFilter, setAppliedFilter] as [typeof appliedFilter, typeof setAppliedFilter];
+    return [state, setState] as [typeof state, typeof setState];
 }

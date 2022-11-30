@@ -23,7 +23,7 @@ export const calculatePostalCodesCategories = async (currentFilter: string | nul
         let categoryName;
 
         if (i === 10) {
-            categoryName = `${currentFilter}others`;
+            categoryName = `${currentFilter ? currentFilter : ""}others`;
 
             const appliedFilterCount = currentFilter
                 ? await getZipCodesRowCountStartingWith(currentFilter)

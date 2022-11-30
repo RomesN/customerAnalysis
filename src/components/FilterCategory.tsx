@@ -16,7 +16,7 @@ const FilterCategory = ({ category }: FilterCategoryProps) => {
             className={styles.filterCategoryContainer}
         >
             <div className={styles.filterCategoryFilter}>
-                <p>PSC: {category.name.includes("others") ? "others" : category.name}</p>
+                <p>Postal: {category.name.includes("others") ? "others" : category.name}</p>
             </div>
             <div className={styles.filterCategoryCount}>
                 <p>count: {category.records}</p>

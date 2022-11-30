@@ -12,12 +12,14 @@ const Filter = () => {
         getIsFilterLoading,
         setIsFilterLoadingState,
         setFilterCategoriesState,
+        setPageState,
     } = useCustomerAnalysisContext();
     const currentFilterApplied = getAppliedFilter();
     const calculatedCategories = getFilterCategories();
 
     const calculateCategoriesAndSetStates = async (currentFilter: string | null) => {
         const calculatedCategories = calculatePostalCodesCategories(currentFilter);
+        setPageState("1");
         setFilterCategoriesState((await calculatedCategories).categories);
         setIsFilterLoadingState(false);
     };
