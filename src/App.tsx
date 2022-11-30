@@ -1,4 +1,5 @@
 import { Route, Routes, Navigate } from "react-router-dom";
+import "./styles/general/index.css";
 import CustomerApi from "./pages/CustomersApi";
 
 function App() {

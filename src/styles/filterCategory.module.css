@@ -1,0 +1,39 @@
+@import "./general/colors.css";
+
+.filterCategoryContainer {
+    border: 0.5px solid var(--fontDark);
+    border-radius: 5px;
+    margin: 2px 2px;
+    padding: 2px 5px;
+    animation: fadeIn 0.5s;
+}
+
+.filterCategoryContainer:hover {
+    cursor: pointer;
+    background-color: var(--secondaryColor);
+    color: var(--fontBright);
+}
+
+.filterCategoryFilter {
+    width: 100%;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.filterCategoryCount {
+    width: 100%;
+    font-size: 12px;
+}
+
+.filterCategoryContainer p {
+    margin: 0;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

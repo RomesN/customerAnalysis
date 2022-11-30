@@ -3,15 +3,17 @@ import { Customer, FilterCategory, Props } from "../shared/types";
 import useQueryParam from "./useQueryParam";
 
 type CustomerAnalysisContextType = {
-    getData: () => Customer | null;
+    getData: () => Customer[] | null;
     getPage: () => number;
     getAppliedFilter: () => string | null;
     getFilterCategories: () => null | FilterCategory[];
-    getIsLoading: () => boolean;
+    getIsFilterLoading: () => boolean;
+    getIsDataLoading: () => boolean;
     setAppliedFilterState: (selectedCategoryString: string) => void;
     setFilterCategoriesState: (filterCategories: null | FilterCategory[]) => void;
     setDataState: (receivedData: any) => void;
-    setIsLoadingState: (isLoadingState: boolean) => void;
+    setIsFilterLoadingState: (isLoadingState: boolean) => void;
+    setIsDataLoadingState: (isLoadingState: boolean) => void;
     setPageState: (newPage: number) => void;
 };
 
@@ -22,10 +24,11 @@ export function useCustomerAnalysisContext() {
 }
 
 export const CustomerAnalysisContextProvider = ({ children }: Props) => {
-    const [data, setData] = useState<Customer | null>(null);
-    const [appliedFilter, setAppliedFilter] = useQueryParam();
+    const [data, setData] = useState<Customer[] | null>(null);
+    const [appliedFilter, setAppliedFilter] = useQueryParam("postalStartsWith");
     const [filterCategories, setFilterCategories] = useState<null | FilterCategory[]>(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isFilterLoading, setIsFilterLoading] = useState(false);
+    const [isDataLoading, setIsDataLoading] = useState(false);
     const [page, setPage] = useState(1);
 
     function getData() {
@@ -44,8 +47,12 @@ export const CustomerAnalysisContextProvider = ({ children }: Props) => {
         return filterCategories;
     }
 
-    function getIsLoading() {
-        return isLoading;
+    function getIsFilterLoading() {
+        return isFilterLoading;
+    }
+
+    function getIsDataLoading() {
+        return isDataLoading;
     }
 
     function setDataState(receivedData: any) {
@@ -64,8 +71,12 @@ export const CustomerAnalysisContextProvider = ({ children }: Props) => {
         setFilterCategories(filterCategories);
     }
 
-    function setIsLoadingState(isLadingState: boolean) {
-        setIsLoading(isLadingState);
+    function setIsFilterLoadingState(isLadingState: boolean) {
+        setIsFilterLoading(isLadingState);
+    }
+
+    function setIsDataLoadingState(isLadingState: boolean) {
+        setIsDataLoading(isLadingState);
     }
 
     return (
@@ -75,12 +86,14 @@ export const CustomerAnalysisContextProvider = ({ children }: Props) => {
                 getPage,
                 getAppliedFilter,
                 getFilterCategories,
-                getIsLoading,
+                getIsFilterLoading,
+                getIsDataLoading,
                 setAppliedFilterState,
                 setFilterCategoriesState,
                 setPageState,
                 setDataState,
-                setIsLoadingState,
+                setIsFilterLoadingState,
+                setIsDataLoadingState,
             }}
         >
             {children}

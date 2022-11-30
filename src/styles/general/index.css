@@ -1,0 +1,6 @@
+@import "./colors.css";
+
+body {
+    font-family: "Montserrat", sans-serif;
+    background-color: var(--mainColor);
+}

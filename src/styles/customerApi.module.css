@@ -1,0 +1,15 @@
+.customerApiContainer h4 {
+    margin: 0px 7px 10px;
+}
+
+.customerApiContainer {
+    display: flex;
+}
+
+.customerApiFilterContainer {
+    width: 25%;
+}
+
+.customerApiDataContainer {
+    width: 75%;
+}

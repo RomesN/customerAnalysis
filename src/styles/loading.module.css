@@ -53,19 +53,19 @@
 }
 .ldio-1zhfes7vwu4 div:nth-child(1) {
     left: 45.9px;
-    background: var(--mainColor);
+    background: var(--secondaryColor);
     animation: ldio-1zhfes7vwu4-1 1.0204081632653061s cubic-bezier(0, 0.5, 0.5, 1) infinite;
     animation-delay: -0.20408163265306123s;
 }
 .ldio-1zhfes7vwu4 div:nth-child(2) {
     left: 96.9px;
-    background: var(--secondaryColor);
+    background: var(--secondaryColorTint2);
     animation: ldio-1zhfes7vwu4-2 1.0204081632653061s cubic-bezier(0, 0.5, 0.5, 1) infinite;
     animation-delay: -0.10204081632653061s;
 }
 .ldio-1zhfes7vwu4 div:nth-child(3) {
     left: 147.9px;
-    background: var(--tertiaryColor);
+    background: var(--secondaryColorTint3);
     animation: ldio-1zhfes7vwu4-3 1.0204081632653061s cubic-bezier(0, 0.5, 0.5, 1) infinite;
     animation-delay: undefineds;
 }

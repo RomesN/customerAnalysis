@@ -1,7 +1,9 @@
 :root {
-    --mainColor: #212121;
-    --secondaryColor: #6d9886;
-    --tertiaryColor: #d9cab3;
+    --mainColor: #ebeef1;
+    --secondaryColor: #ffab26;
+    --secondaryColorTint2: #ffbc51;
+    --secondaryColorTint3: #ffe4b9;
+    --tertiaryColor: #f3f5f7;
     --fontDark: #212121;
     --fontBright: #f6f6f6;
     --errorColor: #b63838;

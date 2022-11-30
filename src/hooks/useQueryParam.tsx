@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-export default function useQueryParam() {
+export default function useQueryParam(paramName: string) {
     const [searchParams, setSearchParams] = useSearchParams();
-    const postalSearchWith = searchParams.get("postalStartsWith");
+    const postalSearchWith = searchParams.get(paramName);
     const [appliedFilter, setAppliedFilter] = useState<string | null>(postalSearchWith);
 
     useEffect(() => {
