@@ -1,11 +1,13 @@
 @import "./general/colors.css";
 
 .dataTable {
-    margin: 2px 10px;
+    padding: 2px 10px;
     text-align: left;
     vertical-align: center;
     border-collapse: separate;
     border-spacing: 0;
+    width: 100%;
+    animation: fadeIn 1s;
 }
 
 /* general head style */
@@ -21,6 +23,29 @@
 .dataTable td {
     background-color: var(--mainColor);
     padding: 5px 5px;
+    word-wrap: break-word;
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .dataTable th {
+        font-size: 15px;
+    }
+
+    .dataTable td {
+        font-size: 13px;
+    }
+}
+
+/* SMALLER DISPLAYS */
+@media screen and (max-width: 991px) {
+    .dataTable th {
+        font-size: 12px;
+    }
+
+    .dataTable td {
+        font-size: 11px;
+    }
 }
 
 /* rounded top left */
@@ -64,7 +89,8 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin: 10px 0 0 0;
+    margin: 10px 0;
+    animation: fadeIn 1s;
 }
 
 .currentPage {
@@ -104,4 +130,13 @@
     color: var(--secondaryColor);
     cursor: pointer;
     padding: 0.3em 0.6em;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }

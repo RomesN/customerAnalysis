@@ -5,8 +5,8 @@
     border-radius: 5px;
     margin: 2px 2px;
     padding: 2px 5px;
-    animation: fadeIn 0.5s;
     background-color: var(--mainColor);
+    animation: fadeIn 1s;
 }
 
 .filterCategoryContainer:hover {
@@ -17,13 +17,11 @@
 
 .filterCategoryFilter {
     width: 100%;
-    font-size: 15px;
     font-weight: 500;
 }
 
 .filterCategoryCount {
     width: 100%;
-    font-size: 12px;
 }
 
 .filterCategoryContainer p {
@@ -36,5 +34,27 @@
     }
     100% {
         opacity: 1;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .filterCategoryFilter {
+        font-size: 15px;
+    }
+
+    .filterCategoryCount {
+        font-size: 12px;
+    }
+}
+
+/* SMALLER DISPLAYS */
+@media screen and (max-width: 991px) {
+    .filterCategoryFilter {
+        font-size: 12px;
+    }
+
+    .filterCategoryCount {
+        font-size: 10px;
     }
 }

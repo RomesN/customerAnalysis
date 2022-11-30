@@ -1,9 +1,12 @@
-.customerApiContainer h4 {
-    margin: 0px 7px 10px;
-}
-
 .customerApiContainer {
     display: flex;
+    flex-wrap: wrap;
+}
+
+.customerApiContainer h4 {
+    text-align: center;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 .customerApiFilterContainer {
@@ -12,4 +15,18 @@
 
 .customerApiDataContainer {
     width: 75%;
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .customerApiContainer h4 {
+        font-size: 15px;
+    }
+}
+
+/* SMALLER DISPLAYS */
+@media screen and (max-width: 991px) {
+    .customerApiContainer h4 {
+        font-size: 12px;
+    }
 }

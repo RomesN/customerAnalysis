@@ -111,7 +111,6 @@ const DataTable = () => {
 
     return (
         <>
-            {Number.isNaN(currentPage) && <p>Not valid page number</p>}
             {!Number.isNaN(currentPage) && currentPage <= totalNumberOfPages && (
                 <table className={styles.dataTable}>
                     <thead>
