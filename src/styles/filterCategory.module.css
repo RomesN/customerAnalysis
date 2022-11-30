@@ -1,17 +1,18 @@
 @import "./general/colors.css";
 
 .filterCategoryContainer {
-    border: 0.5px solid var(--fontDark);
+    border: 0.5px solid var(--dark);
     border-radius: 5px;
     margin: 2px 2px;
     padding: 2px 5px;
     animation: fadeIn 0.5s;
+    background-color: var(--mainColor);
 }
 
 .filterCategoryContainer:hover {
     cursor: pointer;
     background-color: var(--secondaryColor);
-    color: var(--fontBright);
+    color: var(--bright);
 }
 
 .filterCategoryFilter {

@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Loading from "./Loading";
 import { useCustomerAnalysisContext } from "../hooks/CustomerAnalysisContext";
 import { getAllData, getFilteredData } from "../api/customersApi";
+import styles from "../styles/dataTable.module.css";
 
 const DataTable = () => {
     const { getAppliedFilter, getData, getIsDataLoading, getPage, setIsDataLoadingState, setDataState, setPageState } =
@@ -59,6 +60,7 @@ const DataTable = () => {
                         setPageState(i.toString());
                     }}
                     disabled={i === currentPage}
+                    className={i === currentPage ? styles.currentPage : styles.otherPages}
                     key={i}
                 >
                     {i}
@@ -73,7 +75,9 @@ const DataTable = () => {
                         setPageState(Math.min(currentPage + 7, pageCount).toString());
                     }}
                     size="sm"
+                    key="right"
                     icon={faChevronRight}
+                    className={styles.chevron}
                 />
             );
         }
@@ -87,7 +91,9 @@ const DataTable = () => {
                         setPageState(Math.max(currentPage - 7, 1).toString());
                     }}
                     size="sm"
+                    key="left"
                     icon={faChevronLeft}
+                    className={styles.chevron}
                 />
             );
         }
@@ -107,7 +113,7 @@ const DataTable = () => {
         <>
             {Number.isNaN(currentPage) && <p>Not valid page number</p>}
             {!Number.isNaN(currentPage) && currentPage <= totalNumberOfPages && (
-                <table>
+                <table className={styles.dataTable}>
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -118,7 +124,7 @@ const DataTable = () => {
                     <tbody>{showPage()}</tbody>
                 </table>
             )}
-            {showPages(totalNumberOfPages)}
+            <div className={styles.pageContainer}>{showPages(totalNumberOfPages)}</div>
         </>
     );
 };
