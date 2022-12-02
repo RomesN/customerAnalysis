@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { calculatePostalCodesCategories } from "../utils/helperFuncions";
+import { getCategories } from "../utils/helperFuncions";
 import FilterCategory from "./FilterCategory";
 import Loading from "./Loading";
 import { useCustomerAnalysisContext } from "../hooks/CustomerAnalysisContext";
@@ -19,9 +19,9 @@ const Filter = () => {
     const calculatedCategories = getFilterCategories();
 
     const calculateCategoriesAndSetStates = async (currentFilter: string | null) => {
-        const calculatedCategories = calculatePostalCodesCategories(currentFilter);
+        const calculatedCategories = await getCategories(currentFilter);
         setPageState(1);
-        setFilterCategoriesState((await calculatedCategories).categories);
+        setFilterCategoriesState(calculatedCategories);
         setIsFilterLoadingState(false);
     };
 
@@ -48,7 +48,7 @@ const Filter = () => {
             {calculatedCategories &&
                 calculatedCategories.length > 1 &&
                 getFilterCategories()?.map((category) => {
-                    return <FilterCategory category={category} key={category.name}></FilterCategory>;
+                    return <FilterCategory category={category} key={category[0]}></FilterCategory>;
                 })}
             {(!calculatedCategories || calculatedCategories.length <= 1) && (
                 <p className={styles.noDrillDown}>No further drill down possible.</p>

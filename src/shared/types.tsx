@@ -16,21 +16,22 @@ export type ResponseProperty = {
 
 export type Customer = {
     id: number;
-    lastUpdate: string;
-    kod: string;
-    nazev: string;
-    ic: string;
-    dic: string;
-    ulice: string;
-    mesto: string;
+    lastUpdate?: string;
+    kod?: string;
+    nazev?: string;
+    ic?: string;
+    dic?: string;
+    ulice?: string;
+    mesto?: string;
     psc: string;
-    stat: string;
+    stat?: string;
 };
 
-export type FilterCategory = {
-    name: string;
-    records: number;
+export type PostalCount = {
+    [key: string]: number;
 };
+
+export type FilterCategory = [name: string, records: number];
 
 export type PostalCode = {
     id: number;

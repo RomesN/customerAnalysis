@@ -3,7 +3,6 @@ import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Loading from "./Loading";
 import { useCustomerAnalysisContext } from "../hooks/CustomerAnalysisContext";
-import { getAllData, getFilteredData } from "../api/customersApi";
 import styles from "../styles/dataTable.module.css";
 
 const DataTable = () => {
@@ -14,14 +13,14 @@ const DataTable = () => {
     const totalNumberOfPages = Math.ceil((getData()?.length || 0) / 20);
 
     const fetchData = async () => {
-        let data;
-        if (!appliedFilter) {
-            data = await getAllData();
-        } else {
-            data = await getFilteredData(appliedFilter);
-        }
-        setDataState(data);
-        setIsDataLoadingState(false);
+        // let data;
+        // if (!appliedFilter) {
+        //     data = await getAllData();
+        // } else {
+        //     data = await getFilteredData(appliedFilter);
+        // }
+        // setDataState(data);
+        // setIsDataLoadingState(false);
     };
 
     const showPage = () => {
