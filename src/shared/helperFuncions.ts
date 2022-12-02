@@ -1,5 +1,5 @@
 import { getAllPostals, getCountPostalEqual, getFilteredPostals } from "../api/customersApi";
-import { Customer, FilterCategory, PostalCount } from "../shared/types";
+import { Customer, FilterCategory, PostalCount } from "./types";
 
 export const getCategories = async (appliedFilter: string | null) => {
     // filtered
