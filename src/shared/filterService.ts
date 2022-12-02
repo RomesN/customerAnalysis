@@ -37,17 +37,14 @@ export const getCategories = async (appliedFilter: string | null) => {
         }
         let categories = await calculatePostalCategoriesForGivenFilter(data, withoutOthers);
         for (let i = 0; i < numberOfOthers; i++) {
-            for (let category of categories) {
-                if (category[0] !== othersCategoryName) {
-                    data = data.filter((customer) => {
-                        if (category[0] === emptyCategoryName) {
-                            return customer.psc.length > 0;
-                        } else {
-                            return !RegExp(`^${category[0]}`).test(customer.psc.toLocaleUpperCase());
-                        }
-                    });
+            const filterOutEmpty = categories.some((category) => category[0] === emptyCategoryName);
+            data = data.filter((customer) => {
+                if (filterOutEmpty && customer.psc.length === 0) {
+                    return false;
+                } else {
+                    return !categories.some((category) => customer.psc.startsWith(category[0]));
                 }
-            }
+            });
             categories = await calculatePostalCategoriesForGivenFilter(data, withoutOthers);
         }
         return categories;
