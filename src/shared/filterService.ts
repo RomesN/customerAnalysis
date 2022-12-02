@@ -1,9 +1,10 @@
 import { getAllPostals, getCountPostalEqual, getFilteredPostals } from "../api/customersApi";
 import { Customer, FilterCategory, PostalCount } from "./types";
+import { onlyWithouAdditions, othersCategoryName, emptyCategoryName } from "../shared/specialCategoryNames";
 
 export const getCategories = async (appliedFilter: string | null) => {
-    // filtered
-    if (appliedFilter === "empty") {
+    // selected empty only
+    if (appliedFilter === emptyCategoryName) {
         return [];
     }
 
@@ -17,7 +18,7 @@ export const getCategories = async (appliedFilter: string | null) => {
         }
     }
 
-    const withoutOthers = appliedFilter.replaceAll("others", "");
+    const withoutOthers = appliedFilter.replaceAll(othersCategoryName, "");
 
     // filter applied and the user want an exact category = filter postals with given filter and calculate categories
     if (appliedFilter.length === withoutOthers.length) {
@@ -29,7 +30,7 @@ export const getCategories = async (appliedFilter: string | null) => {
         }
         // filter applied and the user wants "others" category = filter out combinations which were not in other on previous levels and calculate categories from the rest
     } else {
-        const numberOfOthers = (appliedFilter.length - withoutOthers.length) / "others".length;
+        const numberOfOthers = (appliedFilter.length - withoutOthers.length) / othersCategoryName.length;
         let data = withoutOthers.length > 0 ? await getFilteredPostals(withoutOthers) : await getAllPostals();
         if (!Array.isArray(data)) {
             data = [];
@@ -37,19 +38,15 @@ export const getCategories = async (appliedFilter: string | null) => {
         let categories = await calculatePostalCategoriesForGivenFilter(data, withoutOthers);
         for (let i = 0; i < numberOfOthers; i++) {
             for (let category of categories) {
-                if (category[0] !== "others") {
+                if (category[0] !== othersCategoryName) {
                     data = data.filter((customer) => {
-                        if (category[0] === "empty") {
+                        if (category[0] === emptyCategoryName) {
                             return customer.psc.length > 0;
                         } else {
                             return !RegExp(`^${category[0]}`).test(customer.psc.toLocaleUpperCase());
                         }
                     });
                 }
-            }
-            console.table(categories);
-            if (categories[categories.length - 1][1] === 4) {
-                console.table(data);
             }
             categories = await calculatePostalCategoriesForGivenFilter(data, withoutOthers);
         }
@@ -63,7 +60,7 @@ export const calculatePostalCategoriesForGivenFilter = async (data: Customer[], 
     // all combinations counted
     data.forEach((customer) => {
         if (customer.psc.length === 0) {
-            count["empty"] = (count["empty"] || 0) + 1;
+            count[emptyCategoryName] = (count[emptyCategoryName] || 0) + 1;
         }
         for (let i = appliedNonOtherFilter.length; i < customer.psc.length; i++) {
             const combination = customer.psc.toUpperCase().slice(0, i + 1);
@@ -100,7 +97,7 @@ export const calculatePostalCategoriesForGivenFilter = async (data: Customer[], 
     if (appliedNonOtherFilter.length > 0) {
         const rowCountCombinationOnly = (await getCountPostalEqual(appliedNonOtherFilter)) || "0";
         if (rowCountCombinationOnly !== "0" && !Number.isNaN(parseInt(rowCountCombinationOnly))) {
-            count[`${appliedNonOtherFilter}only`] = parseInt(rowCountCombinationOnly);
+            count[`${appliedNonOtherFilter}${onlyWithouAdditions}`] = parseInt(rowCountCombinationOnly);
         }
     }
 
@@ -120,7 +117,7 @@ export const calculatePostalCategoriesForGivenFilter = async (data: Customer[], 
             coefficientOfVariation > parseFloat(process.env.REACT_APP_TOLERATED_VARIATION_COEFFICIENT || "0.5"))
     ) {
         sortedCombinations.splice(sortedCombinations.length - 2, 2, [
-            "others",
+            othersCategoryName,
             sortedCombinations[sortedCombinations.length - 1][1] + sortedCombinations[sortedCombinations.length - 2][1],
         ]);
         if (sortedCombinations.length <= 10) {

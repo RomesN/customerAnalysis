@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { getCategories } from "../shared/helperFuncions";
+import { getCategories } from "../shared/filterService";
 import FilterCategory from "./FilterCategory";
 import Loading from "./Loading";
 import { useCustomerAnalysisContext } from "../hooks/CustomerAnalysisContext";

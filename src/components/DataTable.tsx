@@ -1,9 +1,13 @@
 import { useEffect } from "react";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getAllData, getAllEmpty, getAllEqualTo, getPostalDataStartingWith } from "../api/customersApi";
+import { onlyWithouAdditions, othersCategoryName, emptyCategoryName } from "../shared/specialCategoryNames";
 import Loading from "./Loading";
 import { useCustomerAnalysisContext } from "../hooks/CustomerAnalysisContext";
 import styles from "../styles/dataTable.module.css";
+import { getCategories } from "../shared/filterService";
+import { Customer, FilterCategory } from "../shared/types";
 
 const DataTable = () => {
     const { getAppliedFilter, getData, getIsDataLoading, getPage, setIsDataLoadingState, setDataState, setPageState } =
@@ -13,14 +17,56 @@ const DataTable = () => {
     const totalNumberOfPages = Math.ceil((getData()?.length || 0) / 20);
 
     const fetchData = async () => {
-        // let data;
-        // if (!appliedFilter) {
-        //     data = await getAllData();
-        // } else {
-        //     data = await getFilteredData(appliedFilter);
-        // }
-        // setDataState(data);
-        // setIsDataLoadingState(false);
+        let fetchResult: Customer[] | string | undefined;
+        if (!appliedFilter) {
+            fetchResult = await getAllData();
+        } else if (appliedFilter === emptyCategoryName) {
+            fetchResult = await getAllEmpty();
+        } else if (appliedFilter.includes(onlyWithouAdditions)) {
+            fetchResult = await getAllEqualTo(appliedFilter.replace(onlyWithouAdditions, ""));
+        } else if (!appliedFilter.includes(othersCategoryName)) {
+            fetchResult = await getPostalDataStartingWith(appliedFilter);
+        } else if (appliedFilter.includes(othersCategoryName)) {
+            const withoutOthers = appliedFilter.replaceAll(othersCategoryName, "");
+            const numberOfOthers = (appliedFilter.length - withoutOthers.length) / othersCategoryName.length;
+            let categories = [] as FilterCategory[];
+
+            if (withoutOthers.length > 0) {
+                fetchResult = await getPostalDataStartingWith(withoutOthers);
+            } else {
+                fetchResult = await getAllData();
+            }
+
+            let i = 0;
+            let categoryString = withoutOthers;
+            do {
+                categories = [
+                    ...categories,
+                    ...(await getCategories(categoryString.length > 0 ? categoryString : null)),
+                ];
+                categoryString = categoryString.concat(othersCategoryName);
+                i++;
+            } while (i < numberOfOthers);
+
+            const categoriesMapped = categories
+                .filter((category) => category[0] !== othersCategoryName)
+                .map((category) => category[0]);
+
+            if (Array.isArray(fetchResult)) {
+                fetchResult = fetchResult.filter((customer) => {
+                    if (categoriesMapped.includes(emptyCategoryName) && customer.psc.length === 0) {
+                        return false;
+                    } else {
+                        return !categoriesMapped.some((catString) => customer.psc.startsWith(catString));
+                    }
+                });
+            }
+        }
+
+        if (Array.isArray(fetchResult)) {
+            setDataState(fetchResult);
+            setIsDataLoadingState(false);
+        }
     };
 
     const showPage = () => {
@@ -37,7 +83,7 @@ const DataTable = () => {
             });
     };
 
-    const showPages = (pageCount: number) => {
+    const showPagesSelection = (pageCount: number) => {
         const result = [];
         let min;
         let max;
@@ -120,7 +166,7 @@ const DataTable = () => {
                 </thead>
                 <tbody>{showPage()}</tbody>
             </table>
-            <div className={styles.pageContainer}>{showPages(totalNumberOfPages)}</div>
+            <div className={styles.pageContainer}>{showPagesSelection(totalNumberOfPages)}</div>
         </>
     );
 };
