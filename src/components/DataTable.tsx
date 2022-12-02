@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getAllData, getAllEmpty, getAllEqualTo, getPostalDataStartingWith } from "../api/customersApi";
-import { onlyWithouAdditions, othersCategoryName, emptyCategoryName } from "../shared/specialCategoryNames";
+import { withoutAdditionsName, othersCategoryName, emptyCategoryName } from "../shared/specialCategoryNames";
 import Loading from "./Loading";
 import { useCustomerAnalysisContext } from "../hooks/CustomerAnalysisContext";
 import styles from "../styles/dataTable.module.css";
@@ -22,8 +22,8 @@ const DataTable = () => {
             fetchResult = await getAllData();
         } else if (appliedFilter === emptyCategoryName) {
             fetchResult = await getAllEmpty();
-        } else if (appliedFilter.includes(onlyWithouAdditions)) {
-            fetchResult = await getAllEqualTo(appliedFilter.replace(onlyWithouAdditions, ""));
+        } else if (appliedFilter.includes(withoutAdditionsName)) {
+            fetchResult = await getAllEqualTo(appliedFilter.replace(withoutAdditionsName, ""));
         } else if (!appliedFilter.includes(othersCategoryName)) {
             fetchResult = await getPostalDataStartingWith(appliedFilter);
         } else if (appliedFilter.includes(othersCategoryName)) {

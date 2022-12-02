@@ -1,3 +1,3 @@
 export const othersCategoryName = "$others";
 export const emptyCategoryName = "$empty";
-export const onlyWithouAdditions = "$only";
+export const withoutAdditionsName = "$only";

@@ -1,6 +1,6 @@
 import { useCustomerAnalysisContext } from "../hooks/CustomerAnalysisContext";
 import { FilterCategory as FilterCategoryType } from "../shared/types";
-import { onlyWithouAdditions, othersCategoryName, emptyCategoryName } from "../shared/specialCategoryNames";
+import { withoutAdditionsName, othersCategoryName, emptyCategoryName } from "../shared/specialCategoryNames";
 import styles from "../styles/filterCategory.module.css";
 
 type FilterCategoryProps = {
@@ -14,8 +14,8 @@ const FilterCategory = ({ category }: FilterCategoryProps) => {
             return categoryName;
         } else if ([othersCategoryName, emptyCategoryName].includes(categoryName.toLocaleLowerCase())) {
             return categoryName.replaceAll("$", "");
-        } else if (categoryName.includes(onlyWithouAdditions)) {
-            return categoryName + "+ no additions";
+        } else if (categoryName.includes(withoutAdditionsName)) {
+            return categoryName.replaceAll(withoutAdditionsName, "") + " with no additions";
         } else {
             while (categoryName.length < 6) {
                 categoryName = categoryName.concat("x");

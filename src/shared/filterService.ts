@@ -1,6 +1,6 @@
 import { getAllPostals, getCountPostalEqual, getFilteredPostals } from "../api/customersApi";
 import { Customer, FilterCategory, PostalCount } from "./types";
-import { onlyWithouAdditions, othersCategoryName, emptyCategoryName } from "../shared/specialCategoryNames";
+import { withoutAdditionsName, othersCategoryName, emptyCategoryName } from "../shared/specialCategoryNames";
 
 export const getCategories = async (appliedFilter: string | null) => {
     // selected empty only
@@ -94,7 +94,7 @@ export const calculatePostalCategoriesForGivenFilter = async (data: Customer[], 
     if (appliedNonOtherFilter.length > 0) {
         const rowCountCombinationOnly = (await getCountPostalEqual(appliedNonOtherFilter)) || "0";
         if (rowCountCombinationOnly !== "0" && !Number.isNaN(parseInt(rowCountCombinationOnly))) {
-            count[`${appliedNonOtherFilter}${onlyWithouAdditions}`] = parseInt(rowCountCombinationOnly);
+            count[`${appliedNonOtherFilter}${withoutAdditionsName}`] = parseInt(rowCountCombinationOnly);
         }
     }
 
