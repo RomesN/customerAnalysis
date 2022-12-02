@@ -9,7 +9,7 @@ Copy .env.example as .env then replace the settings in the .env file and run one
 ## Example of the result
 
 
-https://user-images.githubusercontent.com/81518313/204867328-78b67892-3bb9-4e2c-a95e-c167f93b985d.mp4
+https://user-images.githubusercontent.com/81518313/205389519-f1b82a45-a1b4-4607-8942-bc233cf887bf.mp4
 
 
 ## Available Scripts
