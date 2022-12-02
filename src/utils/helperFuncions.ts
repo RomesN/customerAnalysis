@@ -105,15 +105,20 @@ export const calculatePostalCategoriesForGivenFilter = async (data: Customer[], 
     }
 
     const sortedCombinations = Object.entries(count).sort((pairOne, pairTwo) => pairTwo[1] - pairOne[1]);
-    // reclassing categories into "others" category until there is less than 10 categories and variation is not too big
+
     let coefficientOfVariation = 0;
     if (sortedCombinations.length <= 10) {
         coefficientOfVariation = calculateCoefficientOfVariation(
             sortedCombinations.slice(0, sortedCombinations.length)
         );
     }
-    while (sortedCombinations.length > 2 && (sortedCombinations.length > 10 || coefficientOfVariation > 0.3)) {
-        console.table(sortedCombinations);
+
+    // reclassing categories into "others" category until there is less than 10 categories and variation is not above tolerated level
+    while (
+        sortedCombinations.length > 10 ||
+        (sortedCombinations.length > 2 &&
+            coefficientOfVariation > parseFloat(process.env.REACT_APP_TOLERATED_VARIATION_COEFFICIENT || "0.5"))
+    ) {
         sortedCombinations.splice(sortedCombinations.length - 2, 2, [
             "others",
             sortedCombinations[sortedCombinations.length - 1][1] + sortedCombinations[sortedCombinations.length - 2][1],
