@@ -86,7 +86,7 @@ export const calculatePostalCategoriesForGivenFilter = async (data: Customer[], 
         if (subcategories.length === 1 && subcategories[0][1] === combination[1]) delete count[combination[0]];
     }
 
-    // removing subcategories if there is superior one
+    // removing subcategories if there is superior one for it
     for (const combination of Object.keys(count)) {
         let found = false;
         for (const otherCombination of Object.keys(count)) {
@@ -96,6 +96,7 @@ export const calculatePostalCategoriesForGivenFilter = async (data: Customer[], 
         if (found) delete count[combination];
     }
 
+    // adding combination for case that there is combination with no additional characters
     if (appliedNonOtherFilter.length > 0) {
         const rowCountCombinationOnly = (await getCountPostalEqual(appliedNonOtherFilter)) || "0";
         if (rowCountCombinationOnly !== "0" && !Number.isNaN(parseInt(rowCountCombinationOnly))) {
@@ -104,24 +105,52 @@ export const calculatePostalCategoriesForGivenFilter = async (data: Customer[], 
     }
 
     const sortedCombinations = Object.entries(count).sort((pairOne, pairTwo) => pairTwo[1] - pairOne[1]);
-
-    while (
-        sortedCombinations.length > 10
-        // sortedCombinations[sortedCombinations.length - 1][1] < sortedCombinations[sortedCombinations.length - 2][1]
-    ) {
+    // reclassing categories into "others" category until there is less than 10 categories and variation is not too big
+    let coefficientOfVariation = 0;
+    if (sortedCombinations.length <= 10) {
+        coefficientOfVariation = calculateCoefficientOfVariation(
+            sortedCombinations.slice(0, sortedCombinations.length)
+        );
+    }
+    while (sortedCombinations.length > 2 && (sortedCombinations.length > 10 || coefficientOfVariation > 0.3)) {
+        console.table(sortedCombinations);
         sortedCombinations.splice(sortedCombinations.length - 2, 2, [
             "others",
             sortedCombinations[sortedCombinations.length - 1][1] + sortedCombinations[sortedCombinations.length - 2][1],
         ]);
+        if (sortedCombinations.length <= 10) {
+            coefficientOfVariation = calculateCoefficientOfVariation(
+                sortedCombinations.slice(0, sortedCombinations.length)
+            );
+        }
     }
 
     return sortedCombinations as FilterCategory[];
 };
 
-const calculateVariance = (array: FilterCategory[]) => {
+const calculateMean = (array: FilterCategory[]) => {
     if (!array.length) {
         return 0;
     }
     const sum = array.reduce((accumulator, current) => accumulator + current[1], 0);
-    const { length } = array;
+    return sum / array.length;
+};
+
+const standardDeviation = (array: FilterCategory[]) => {
+    if (!array.length) {
+        return 0;
+    }
+    const mean = calculateMean(array);
+    let variance = 0;
+    array.forEach((num) => {
+        variance += (num[1] - mean) * (num[1] - mean);
+    });
+    return Math.sqrt(variance / array.length);
+};
+
+const calculateCoefficientOfVariation = (array: FilterCategory[]) => {
+    if (!array.length) {
+        return 0;
+    }
+    return standardDeviation(array) / calculateMean(array);
 };
